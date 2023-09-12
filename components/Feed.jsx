@@ -6,7 +6,7 @@ import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
-    <div className="mt-16 prompt_layout">
+    <div className="my-16 prompt_layout">
       {data.map((post) => (
         <PromptCard
           key={post._id}
@@ -24,6 +24,7 @@ const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleSearchChange = (e) => {
     e.preventDefault();
@@ -35,6 +36,7 @@ const Feed = () => {
       setTimeout(() => {
         const searchResult = filterPrompts(e.target.value);
         setSearchedResults(searchResult);
+        setIsLoading(false);
       }, 500)
     );
   };
@@ -55,6 +57,7 @@ const Feed = () => {
   };
   useEffect(() => {
     fetchPosts();
+    setIsLoading(false);
   }, []);
 
   const handleTagClick = (tagName) => {
@@ -90,6 +93,8 @@ const Feed = () => {
       ) : (
         <PromptCardList data={posts} handleTagClick={handleTagClick} />
       )}
+
+      {isLoading && <h1>Loading...</h1>}
     </section>
   );
 };

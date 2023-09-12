@@ -9,16 +9,25 @@ import Profile from "@components/Profile";
 const MyProfile = () => {
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
+      const dataLength = await data.length;
+      if (dataLength === 0) {
+        setIsEmpty(true);
+      }
       setPosts(data);
     };
 
-    if (session?.user.id) fetchPosts();
+    if (session?.user.id) {
+      fetchPosts();
+      setIsLoading(false);
+    }
   }, [session]);
 
   const handleEdit = (post) => {
@@ -51,6 +60,8 @@ const MyProfile = () => {
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
+      isLoading={isLoading}
+      isEmpty={isEmpty}
     />
   );
 };
