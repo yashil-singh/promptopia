@@ -55,7 +55,7 @@ const Feed = () => {
   };
   useEffect(() => {
     fetchPosts();
-  }, [posts]);
+  }, []);
 
   const handleTagClick = (tagName) => {
     setSearchText(tagName);

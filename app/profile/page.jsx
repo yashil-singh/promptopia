@@ -19,7 +19,6 @@ const MyProfile = () => {
     };
 
     if (session?.user.id) fetchPosts();
-    else router.push("/");
   }, [session]);
 
   const handleEdit = (post) => {
